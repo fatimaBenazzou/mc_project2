@@ -121,53 +121,56 @@ class _FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                textfield(label: 'Name', controller: nameController),
-                const SizedBox(height: 20),
-                textfield(
-                    label: 'Description', controller: descriptionController),
-                const SizedBox(height: 20),
-        const Text('Category', style: TextStyle(fontWeight: FontWeight.bold)),
-
-                categoryDropDown(),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    dateSelection(
-                      label: 'From:',
-                      date: endDate,
-                      onTap: _presentEndDatePicker,
-                    ),
-                    dateSelection(
-                      label: 'To:',
-                      date: startDate,
-                      onTap: _presentStartDatePicker,
-                    ),
-                  ],
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  textfield(label: 'Name', controller: nameController),
+                  const SizedBox(height: 20),
+                  textfield(
+                      label: 'Description', controller: descriptionController),
+                  const SizedBox(height: 20),
+                  const Text('Category',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  categoryDropDown(),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      dateSelection(
+                        label: 'From:',
+                        date: endDate,
+                        onTap: _presentEndDatePicker,
+                      ),
+                      dateSelection(
+                        label: 'To:',
+                        date: startDate,
+                        onTap: _presentStartDatePicker,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 60),
-          ElevatedButton.icon(
-            icon: widget.eventToEdit == null ? Icon(Icons.add) : Icon(Icons.check),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: kPurple,
+            const SizedBox(height: 60),
+            ElevatedButton.icon(
+              icon: Icon(widget.eventToEdit == null ? Icons.add : Icons.check,
+                  color: Colors.white),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kPurple,
+              ),
+              onPressed: _submitEventData,
+              label: Text(
+                widget.eventToEdit == null ? 'Add' : 'Edit',
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
-            onPressed: _submitEventData,
-            label: Text(
-              widget.eventToEdit == null ? 'Add' : 'Edit',
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

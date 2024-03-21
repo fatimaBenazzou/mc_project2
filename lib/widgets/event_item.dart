@@ -4,7 +4,7 @@ import 'package:mc_project2/main.dart';
 import 'package:mc_project2/models/event.dart';
 import 'package:mc_project2/screens/form.dart';
 
-class EventItem extends StatelessWidget {
+class EventItem extends StatefulWidget {
   const EventItem(
       {Key? key,
       required this.event,
@@ -17,14 +17,27 @@ class EventItem extends StatelessWidget {
   final void Function(Event event) onRemoveEvent;
 
   @override
+  State<EventItem> createState() => _EventItemState();
+}
+
+class _EventItemState extends State<EventItem> {
+  bool isChecked = false;
+
+  @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Checkbox(
-        value: event.isDone,
-        onChanged: (value) {},
+        activeColor: kPurple,
+        value: widget.event.isChecked,
+        onChanged: (value) {
+          setState(() {
+            isChecked = value!;
+            widget.event.isChecked = isChecked;
+          });
+        },
       ),
       title: Text(
-        event.name,
+        widget.event.name,
         style: Theme.of(context)
             .textTheme
             .titleSmall!
@@ -37,8 +50,8 @@ class EventItem extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => FormScreen(
-                        eventToEdit: event,
-                        onSubmittEvent: (event) => onUpdate(event),
+                        eventToEdit: widget.event,
+                        onSubmittEvent: (event) => widget.onUpdate(event),
                       )));
             },
             icon: Icon(
@@ -48,7 +61,7 @@ class EventItem extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              onRemoveEvent(event);
+              widget.onRemoveEvent(widget.event);
             },
             icon: Icon(CupertinoIcons.minus_circle, color: kErreur),
           ),

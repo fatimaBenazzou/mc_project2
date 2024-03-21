@@ -18,7 +18,7 @@ class EventList extends StatelessWidget {
   final void Function(Event event) onUpdate;
 
   String categoryName(String category) {
-    return category[0].toUpperCase() + category.substring(1) + 's';
+    return '${category[0].toUpperCase()}${category.substring(1)}s';
   }
 
   @override
@@ -54,15 +54,8 @@ class EventList extends StatelessWidget {
                   onUpdate: onUpdate,
                 ),
             ],
-          )
-        else
-          const Center(
-            child: Text(
-              'Category empty, Start adding some !',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
           ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }

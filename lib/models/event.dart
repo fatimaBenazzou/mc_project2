@@ -14,7 +14,7 @@ class Event {
     required this.start,
     required this.end,
     required this.category,
-    this.isDone = false,
+    this.isChecked = false,
   }) : id = uuid.v4();
 
   final String id;
@@ -23,5 +23,5 @@ class Event {
   final DateTime start;
   final DateTime end;
   final Category category;
-  final bool isDone;
+  bool isChecked;
 }

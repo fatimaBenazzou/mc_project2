@@ -19,6 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
   DateTime currentDate = DateTime.now();
 
+  
+
   void addEvent(Event event) {
     setState(() {
       dummyEvents.add(event);
@@ -120,18 +122,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    Widget erreurText =  const Text('');
+
+    if (dummyEvents.isEmpty) {
+      erreurText =  const Center(
+        child: Text(
+          'No Events found for the moment!',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ) ;
+    }
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                MaterialPageRoute(builder: (context) =>  const ProfileScreen()),
               );
             },
             icon: CircleAvatar(
               backgroundColor: Colors.transparent,
-              child: Image.asset('assets/images/bird.png'),
+              child: Image.asset('assets/images/bird.png', fit: BoxFit.fill,),
             ),
           )
         ],
@@ -152,8 +165,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          child: Stack(
-            children: [Column(
+          child: Stack(children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -163,23 +176,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   DateFormat('d, EE').format(currentDate),
                   style: TextStyle(
-                      fontSize: 42, fontWeight: FontWeight.bold, color: kPurple),
+                      fontSize: 42,
+                      fontWeight: FontWeight.bold,
+                      color: kPurple),
                 ),
                 Divider(
                   color: kPurple,
                   thickness: 2,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Calendar(selectedDate: selectedDate),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
+                
                 for (final category in Category.values)
                   eventList(context, category),
+
+                  erreurText
               ],
+
             ),
-              Positioned( right: 0, top: 13,child: Image.asset('assets/images/bird.png',height: 85, width: 110,)),
-            
-            ]
-          ),
+            Positioned(
+                right: 0,
+                top: 13,
+                child: Image.asset(
+                  'assets/images/bird.png',
+                  height: 85,
+                  width: 110,
+                )),
+          ]),
         ),
       ),
     );
@@ -188,6 +212,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget eventList(BuildContext context, Category category) {
     final eventsCategory =
         dummyEvents.where((event) => event.category == category).toList();
+
+   
+    if (eventsCategory.isEmpty) {
+      return const SizedBox();
+    }
     return EventList(
       events: eventsCategory,
       category: category.name,
